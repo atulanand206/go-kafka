@@ -27,10 +27,9 @@ func LoadConsumer(brokerId string, topic string) {
 	ConfigureReader(strings.Split(kafkaBrokerUrl, ","), kafkaClientId, kafkaTopic)
 }
 
-func LoadPublisher(brokerId string, topic string, port string) {
+func LoadPublisher(brokerId string, topic string) {
 	flag.StringVar(&kafkaBrokerUrl, "kafka-brokers", brokerId, "Kafka brokers in comma separated value")
 	flag.StringVar(&kafkaTopic, "kafka-topic", topic, "Kafka topic to push")
-	flag.StringVar(&listenAddrApi, "listen-address", port, "Listen address for api")
 	flag.BoolVar(&kafkaVerbose, "kafka-verbose", true, "Kafka verbose logging")
 	flag.StringVar(&kafkaClientId, "kafka-client-id", "kafka-client-id", "Kafka client id to connect")
 
