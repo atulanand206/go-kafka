@@ -19,7 +19,7 @@ var (
 	kafkaClientId string
 )
 
-/* Configures the Reader to register a subscriber for the the kafka broker and topic.*/
+// Configures the Reader to register a subscriber for the the kafka broker and topic.
 func LoadConsumer(brokerId string, topic string) {
 	flag.StringVar(&KafkaBrokerUrl, "kafka-brokers", brokerId, "Kafka brokers in comma separated value")
 	flag.StringVar(&KafkaTopic, "kafka-topic", topic, "Kafka topic. Only one topic per worker.")
@@ -32,7 +32,7 @@ func LoadConsumer(brokerId string, topic string) {
 	ConfigureReader(strings.Split(KafkaBrokerUrl, ","), kafkaClientId, KafkaTopic)
 }
 
-/* Configures the Writer to register a publisher for the the kafka broker and topic.*/
+// Configures the Writer to register a publisher for the the kafka broker and topic.
 func LoadPublisher(brokerId string, topic string) {
 	flag.StringVar(&KafkaBrokerUrl, "kafka-brokers", brokerId, "Kafka brokers in comma separated value")
 	flag.StringVar(&KafkaTopic, "kafka-topic", topic, "Kafka topic to push")

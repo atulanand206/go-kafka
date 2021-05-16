@@ -10,17 +10,15 @@ import (
 	"github.com/segmentio/kafka-go/snappy"
 )
 
-/* Instance variable Writer to be used for writing to a kafka topic.
-Must be configured before calling the Push method.
-*/
+// Instance variable Writer to be used for writing to a kafka topic.
+// Must be configured before calling the Push method.
 var Writer *kafka.Writer
 
-/* Instance variable Reader to be used for reading from a kafka topic.
-Must be configured before calling the Read method.
-*/
+// Instance variable Reader to be used for reading from a kafka topic.
+// Must be configured before calling the Read method.
 var Reader *kafka.Reader
 
-/* Configures the Kafka reader for a given topic listening to the broker url. */
+// Configures the Kafka reader for a given topic listening to the broker url.
 func ConfigureReader(kafkaBrokerUrls []string, clientId string, topic string) {
 	config := kafka.ReaderConfig{
 		Brokers:         kafkaBrokerUrls,
@@ -34,7 +32,7 @@ func ConfigureReader(kafkaBrokerUrls []string, clientId string, topic string) {
 	Reader = kafka.NewReader(config)
 }
 
-/* Listens to the configured Kafka topic and acts every time there is a message in the partition. */
+// Listens to the configured Kafka topic and acts every time there is a message in the partition.
 func Read(handler func(value string)) {
 	if Reader == nil {
 		return
@@ -52,7 +50,7 @@ func Read(handler func(value string)) {
 	}
 }
 
-/* Configures the Kafka writer for a given topic publishing to the broker url. */
+// Configures the Kafka writer for a given topic publishing to the broker url.
 func ConfigureWriter(kafkaBrokerUrls []string, clientId string, topic string) {
 	dialer := &kafka.Dialer{
 		Timeout:  10 * time.Second,
@@ -70,7 +68,7 @@ func ConfigureWriter(kafkaBrokerUrls []string, clientId string, topic string) {
 	Writer = kafka.NewWriter(config)
 }
 
-/* Pushes to the configured Kafka topic as a message in the partition. */
+// Pushes to the configured Kafka topic as a message in the partition.
 func Push(key, value []byte) (err error) {
 	if Writer == nil {
 		return
