@@ -10,15 +10,15 @@ import (
 	"github.com/segmentio/kafka-go/snappy"
 )
 
-/* Instance variable writer to be used for writing to a kafka topic.
+/* Instance variable Writer to be used for writing to a kafka topic.
 Must be configured before calling the Push method.
 */
-var writer *kafka.Writer
+var Writer *kafka.Writer
 
-/* Instance variable reader to be used for reading from a kafka topic.
+/* Instance variable Reader to be used for reading from a kafka topic.
 Must be configured before calling the Read method.
 */
-var reader *kafka.Reader
+var Reader *kafka.Reader
 
 /* Configures the Kafka reader for a given topic listening to the broker url. */
 func ConfigureReader(kafkaBrokerUrls []string, clientId string, topic string) {
@@ -31,16 +31,16 @@ func ConfigureReader(kafkaBrokerUrls []string, clientId string, topic string) {
 		MaxWait:         1 * time.Second, // Maximum amount of time to wait for new data to come when fetching batches of messages from kafka.
 		ReadLagInterval: -1,
 	}
-	reader = kafka.NewReader(config)
+	Reader = kafka.NewReader(config)
 }
 
 /* Listens to the configured Kafka topic and acts every time there is a message in the partition. */
 func Read(handler func(value string)) {
-	if reader == nil {
+	if Reader == nil {
 		return
 	}
 	for {
-		m, err := reader.ReadMessage(context.Background())
+		m, err := Reader.ReadMessage(context.Background())
 		if err != nil {
 			log.Printf("error while receiving message: %s", err.Error())
 			continue
@@ -67,12 +67,12 @@ func ConfigureWriter(kafkaBrokerUrls []string, clientId string, topic string) {
 		ReadTimeout:      10 * time.Second,
 		CompressionCodec: snappy.NewCompressionCodec(),
 	}
-	writer = kafka.NewWriter(config)
+	Writer = kafka.NewWriter(config)
 }
 
 /* Pushes to the configured Kafka topic as a message in the partition. */
 func Push(key, value []byte) (err error) {
-	if writer == nil {
+	if Writer == nil {
 		return
 	}
 
@@ -85,5 +85,5 @@ func Push(key, value []byte) (err error) {
 		Time:  time.Now(),
 	}
 
-	return writer.WriteMessages(parent, message)
+	return Writer.WriteMessages(parent, message)
 }
