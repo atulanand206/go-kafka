@@ -10,9 +10,17 @@ import (
 	"github.com/segmentio/kafka-go/snappy"
 )
 
+/* Instance variable writer to be used for writing to a kafka topic.
+Must be configured before calling the Push method.
+*/
 var writer *kafka.Writer
+
+/* Instance variable reader to be used for reading from a kafka topic.
+Must be configured before calling the Read method.
+*/
 var reader *kafka.Reader
 
+/* Configures the Kafka reader for a given topic listening to the broker url. */
 func ConfigureReader(kafkaBrokerUrls []string, clientId string, topic string) {
 	config := kafka.ReaderConfig{
 		Brokers:         kafkaBrokerUrls,
@@ -26,6 +34,7 @@ func ConfigureReader(kafkaBrokerUrls []string, clientId string, topic string) {
 	reader = kafka.NewReader(config)
 }
 
+/* Listens to the configured Kafka topic and acts every time there is a message in the partition. */
 func Read(handler func(value string)) {
 	if reader == nil {
 		return
@@ -43,7 +52,8 @@ func Read(handler func(value string)) {
 	}
 }
 
-func ConfigureProducer(kafkaBrokerUrls []string, clientId string, topic string) {
+/* Configures the Kafka writer for a given topic publishing to the broker url. */
+func ConfigureWriter(kafkaBrokerUrls []string, clientId string, topic string) {
 	dialer := &kafka.Dialer{
 		Timeout:  10 * time.Second,
 		ClientID: clientId,
@@ -60,6 +70,7 @@ func ConfigureProducer(kafkaBrokerUrls []string, clientId string, topic string) 
 	writer = kafka.NewWriter(config)
 }
 
+/* Pushes to the configured Kafka topic as a message in the partition. */
 func Push(key, value []byte) (err error) {
 	if writer == nil {
 		return

@@ -7,14 +7,19 @@ import (
 )
 
 var (
-	listenAddrApi      string
-	kafkaBrokerUrl     string
-	kafkaVerbose       bool
-	kafkaTopic         string
+	// Contains the broker url for the kafka cluster.
+	kafkaBrokerUrl string
+	// Used for printing the verbose logs to the topic. Set to true for now.
+	kafkaVerbose bool
+	// Contains the topic used for interacting with the broker.
+	kafkaTopic string
+	// Contains the consumer group present in the cluster. Fixed for now.
 	kafkaConsumerGroup string
-	kafkaClientId      string
+	// Contains the client id of the broker. Fixed for now.
+	kafkaClientId string
 )
 
+/* Configures the Reader to register a subscriber for the the kafka broker and topic.*/
 func LoadConsumer(brokerId string, topic string) {
 	flag.StringVar(&kafkaBrokerUrl, "kafka-brokers", brokerId, "Kafka brokers in comma separated value")
 	flag.StringVar(&kafkaTopic, "kafka-topic", topic, "Kafka topic. Only one topic per worker.")
@@ -27,6 +32,7 @@ func LoadConsumer(brokerId string, topic string) {
 	ConfigureReader(strings.Split(kafkaBrokerUrl, ","), kafkaClientId, kafkaTopic)
 }
 
+/* Configures the Writer to register a publisher for the the kafka broker and topic.*/
 func LoadPublisher(brokerId string, topic string) {
 	flag.StringVar(&kafkaBrokerUrl, "kafka-brokers", brokerId, "Kafka brokers in comma separated value")
 	flag.StringVar(&kafkaTopic, "kafka-topic", topic, "Kafka topic to push")
@@ -35,5 +41,5 @@ func LoadPublisher(brokerId string, topic string) {
 
 	flag.Parse()
 
-	ConfigureProducer(strings.Split(kafkaBrokerUrl, ","), kafkaClientId, kafkaTopic)
+	ConfigureWriter(strings.Split(kafkaBrokerUrl, ","), kafkaClientId, kafkaTopic)
 }
