@@ -8,6 +8,12 @@ A library exposing an implementation of [segmentio/kafka-go](https://github.com/
 
 Kafka is a framework implementation of a software bus using stream-processing. It provides messaging queue with an interactive interface. Once you have Kafka running any service written in any language can register itself as publisher or subscriber of a topic. It can also be considered as a sequential implementation when multiple services can interact among themselves without the need of a REST endpoint.
 
+## Learning outcomes
+- Configurations involved for creating kafka publisher and consumer.
+- Create kafka topic to build messaging queues.
+- Setting up a kafka cluster using confluent images for Zookeeper and Kafka for replication and balancing.
+- Functions as method argument to read the messages from the cluster.
+
 ## Pre-requisites
 
 - You should have a kafka cluster running on your machine.
